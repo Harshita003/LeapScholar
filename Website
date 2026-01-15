@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeapScholar AI - Find Your Perfect University</title>
+    <style>
+        /* --- CSS Reset & Variables --- */
+        :root {
+            --primary-color: #2563EB; /* LeapScholar Blue */
+            --primary-hover: #1D4ED8;
+            --secondary-color: #10B981; /* Success Green */
+            --bg-light: #F3F4F6;
+            --bg-white: #FFFFFF;
+            --text-main: #1F2937;
+            --text-light: #6B7280;
+            --border-radius: 12px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- Layout Utilities --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Header / Navigation --- */
+        header {
+            background: var(--bg-white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 1rem 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            letter-spacing: -0.5px;
+        }
+
+        .btn-nav {
+            padding: 8px 16px;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-nav:hover {
+            background-color: #EFF6FF;
+        }
+
+        /* --- Section 1: Landing Page --- */
+        #landing-section {
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 20px;
+            background: linear-gradient(180deg, var(--bg-white) 0%, var(--bg-light) 100%);
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: #111827;
+            line-height: 1.2;
+        }
+
+        .hero-content h1 span {
+            color: var(--primary-color);
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto 2.5rem auto;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 14px 32px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, background-color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Stats Section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .stat-card {
+            background: var(--bg-white);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid #E5E7EB;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        /* --- Section 2: AI Chat Interface --- */
+        #chat-section {
+            background-color: var(--bg-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 600px;
+            height: 80vh;
+            background: var(--bg-white);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .chat-header {
+            padding: 1rem 1.5rem;
+            background: var(--bg-white);
+            border-bottom: 1px solid #E5E7EB;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+
+        .avatar-logo {
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+        }
+
+        .chat-header-info h3 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .chat-header-info p {
+            font-size: 0.8rem;
+            color: var(--secondary-color);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .chat-header-info p::before {
+            content: '';
+            display: block;
+            width: 6px;
+            height: 6px;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+        }
+
+        .chat-body {
+            flex: 1; /* Takes available space */
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background-color: #FAFAFA;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            position: relative;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.ai {
+            background-color: white;
+            border: 1px solid #E5E7EB;
+            border-top-left-radius: 2px;
+            align-self: flex-start;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .message.user {
+            background-color: var(--primary-color);
+            color: white;
+            border-bottom-right-radius: 2px;
+            align-self: flex-end;
+        }
+
+        .options-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 5px;
+        }
+
+        .option-btn {
+            background-color: white;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .option-btn.selected {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 12px 16px;
+            background-color: white;
+            border-radius: 12px;
+            border-top-left-radius: 2px;
+            width: fit-content;
+            align-self: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: #CBD5E1;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .dot:nth-child(1) { animation-delay: -0.32s; }
+        .dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        /* --- Chat Footer / Input Area --- */
+        .chat-footer {
+            padding: 15px;
+            background: var(--bg-white);
+            border-top: 1px solid #E5E7EB;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        #user-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #E5E7EB;
+            border-radius: 24px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        #user-input:focus {
+            border-color: var(--primary-color);
+        }
+
+        #send-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+
+        #send-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        #send-btn:disabled {
+            background: #CBD5E1;
+            cursor: not-allowed;
+        }
+
+        /* --- Section 3: Results Page --- */
+        #results-section {
+            padding: 3rem 20px;
+            background-color: var(--bg-light);
+            min-height: 100vh;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .results-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .results-subtext {
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .university-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .uni-card {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .uni-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .uni-image {
+            height: 160px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .uni-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .uni-badge {
+            display: inline-block;
+            background-color: #DEF7EC;
+            color: #03543F;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            align-self: flex-start;
+        }
+
+        .uni-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .uni-program {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .uni-stats {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .uni-stat {
+            font-size: 0.85rem;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .uni-stat strong {
+            display: block;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .btn-apply {
+            margin-top: auto;
+            width: 100%;
+            padding: 10px;
+            background-color: var(--bg-white);
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-apply:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .actions-footer {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 2rem; }
+            .chat-container { height: 100vh; border-radius: 0; max-width: 100%; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .logo-text { font-size: 1.2rem; }
+            .logo-icon { width: 32px; height: 32px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo-wrapper" onclick="resetApp()">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Hexagon Shape -->
+                        <path d="M12 2L3 7V17L12 22L21 17V7L12 2Z" fill="#2563EB"/>
+                        <!-- Cube Icon (Isometric) -->
+                        <path d="M12 6.5L16 8.5V12.5L12 14.5L8 12.5V8.5L12 6.5Z" fill="white"/>
+                        <path d="M12 10.5V14.5M12 10.5L16 8.5M12 10.5L8 8.5" stroke="#2563EB" stroke-width="0.5" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="logo-text">LEAP SCHOLAR</span>
+                </a>
+                <a href="#" class="btn-nav" onclick="resetApp()">Start Over</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- 1. LANDING PAGE SECTION -->
+        <section id="landing-section" class="fade-in">
+            <div class="container hero-content">
+                <h1>Your AI Compass for<br><span>Global Education</span></h1>
+                <p>Stop browsing endless lists. Tell our AI about your goals, and get a personalized shortlist of top universities in seconds.</p>
+                
+                <button class="btn-primary" onclick="startChatFlow()">
+                    Find My University
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                </button>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number">50K+</span>
+                        <span class="stat-label">Students Helped</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">2,000+</span>
+                        <span class="stat-label">Universities</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">95%</span>
+                        <span class="stat-label">Match Accuracy</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">15+</span>
+                        <span class="stat-label">Countries</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. AI CHAT INTERFACE SECTION -->
+        <section id="chat-section" class="hidden">
+            <div class="chat-container fade-in">
+                <div class="chat-header">
+                    <svg class="avatar-logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L3 7V17L12 22L21 17V7L12 2Z" fill="#2563EB"/>
+                        <path d="M12 6.5L16 8.5V12.5L12 14.5L8 12.5V8.5L12 6.5Z" fill="white"/>
+                        <path d="M12 10.5V14.5M12 10.5L16 8.5M12 10.5L8 8.5" stroke="#2563EB" stroke-width="0.5" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="chat-header-info">
+                        <h3>LeapScholar AI Advisor</h3>
+                        <p>Online • Replies instantly</p>
+                    </div>
+                </div>
+                
+                <div class="chat-body" id="chat-body">
+                    <!-- Messages will be injected here via JS -->
+                </div>
+
+                <!-- NEW: Typing Footer -->
+                <div class="chat-footer">
+                    <input type="text" id="user-input" placeholder="Type your answer here..." autocomplete="off">
+                    <button id="send-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. RESULTS SECTION -->
+        <section id="results-section" class="hidden">
+            <div class="container fade-in">
+                <div class="results-header">
+                    <h2>Your University Shortlist</h2>
+                    <p class="results-subtext">Based on your profile, we found these top matches. Good luck with your applications!</p>
+                </div>
+                
+                <div class="university-grid" id="uni-grid">
+                    <!-- University Cards will be injected here via JS -->
+                </div>
+
+                <div class="actions-footer">
+                    <button class="btn-primary" onclick="resetApp()">Start New Evaluation</button>
+                    <div style="margin-top: 1rem;">
+                        <a href="#" style="color: var(--primary-color); text-decoration: none;">Talk to a Human Counselor</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // --- State Management ---
+        const state = {
+            step: 0,
+            preferences: {
+                country: null,
+                degree: null,
+                gpa: null,
+                interest: null
+            }
+        };
+
+        // --- DOM Elements ---
+        const landingSection = document.getElementById('landing-section');
+        const chatSection = document.getElementById('chat-section');
+        const resultsSection = document.getElementById('results-section');
+        const chatBody = document.getElementById('chat-body');
+        const uniGrid = document.getElementById('uni-grid');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+
+        // --- Interaction Logic ---
+
+        function startChatFlow() {
+            // Hide Landing, Show Chat
+            landingSection.classList.add('hidden');
+            chatSection.classList.remove('hidden');
+            
+            // Start Conversation
+            addMessage("Hi there! 👋 I'm your AI Study Advisor. I can help you find the best universities abroad in just a few clicks.", 'ai');
+            
+            setTimeout(() => {
+                addMessage("To get started, where are you planning to study?", 'ai');
+                showOptions(['USA', 'UK', 'Canada', 'Australia'], handleCountryChoice);
+            }, 800);
+        }
+
+        // --- NEW: Text Input Handling ---
+
+        sendBtn.addEventListener('click', handleUserText);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleUserText();
+        });
+
+        function handleUserText() {
+            const text = userInput.value.trim();
+            if (!text) return;
+
+            // Add user message
+            addMessage(text, 'user');
+            userInput.value = '';
+
+            // Simple keyword detection for demo purposes
+            const lowerText = text.toLowerCase();
+            
+            if (state.step === 0) { // Expecting Country
+                if (lowerText.includes('usa') || lowerText.includes('states')) handleCountryChoice('USA');
+                else if (lowerText.includes('uk') || lowerText.includes('britain')) handleCountryChoice('UK');
+                else if (lowerText.includes('canada')) handleCountryChoice('Canada');
+                else if (lowerText.includes('australia')) handleCountryChoice('Australia');
+                else askAgain("Could you please select from the options: USA, UK, Canada, or Australia?");
+            }
+            else if (state.step === 1) { // Expecting Degree
+                if (lowerText.includes('bachelor') || lowerText.includes('grad')) handleDegreeChoice('Bachelors');
+                else if (lowerText.includes('master')) handleDegreeChoice('Masters');
+                else if (lowerText.includes('mba')) handleDegreeChoice('MBA');
+                else if (lowerText.includes('phd') || lowerText.includes('doctor')) handleDegreeChoice('PhD');
+                else askAgain("Please choose a degree level: Bachelors, Masters, MBA, or PhD.");
+            }
+            else if (state.step === 2) { // Expecting GPA
+                if (lowerText.includes('3.5') || lowerText.includes('excellent') || lowerText.includes('high')) handleGPAChoice('3.5+ (Excellent)');
+                else if (lowerText.includes('3.0') || lowerText.includes('good')) handleGPAChoice('3.0 - 3.5 (Good)');
+                else if (lowerText.includes('below') || lowerText.includes('low')) handleGPAChoice('Below 3.0');
+                else askAgain("Please indicate your GPA range: 3.5+, 3.0-3.5, or Below 3.0.");
+            }
+            else if (state.step === 3) { // Expecting Interest
+                if (lowerText.includes('cs') || lowerText.includes('computer')) handleInterestChoice('Computer Science');
+                else if (lowerText.includes('business') || lowerText.includes('finance')) handleInterestChoice('Business & Finance');
+                else if (lowerText.includes('eng')) handleInterestChoice('Engineering');
+                else if (lowerText.includes('art') || lowerText.includes('design')) handleInterestChoice('Arts & Design');
+                else askAgain("Please pick an interest: Computer Science, Business, Engineering, or Arts.");
+            }
+            else {
+                // Fallback if chat is done or unknown state
+                addMessage("I'm listening! Please start a new evaluation to get recommendations.", 'ai');
+            }
+        }
+
+        function askAgain(msg) {
+            setTimeout(() => {
+                addMessage(msg, 'ai');
+                // Re-show options if they failed to match
+                if (state.step === 0) showOptions(['USA', 'UK', 'Canada', 'Australia'], handleCountryChoice);
+                if (state.step === 1) showOptions(["Bachelors", "Masters", "MBA", "PhD"], handleDegreeChoice);
+                if (state.step === 2) showOptions(["3.5+ (Excellent)", "3.0 - 3.5 (Good)", "Below 3.0"], handleGPAChoice);
+                if (state.step === 3) showOptions(["Computer Science", "Business & Finance", "Engineering", "Arts & Design"], handleInterestChoice);
+            }, 600);
+        }
+
+        function addMessage(text, sender) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${sender}`;
+            msgDiv.innerHTML = text;
+            chatBody.appendChild(msgDiv);
+            scrollToBottom();
+        }
+
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing-indicator';
+            typingDiv.id = 'typing-indicator';
+            typingDiv.innerHTML = `
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            `;
+            chatBody.appendChild(typingDiv);
+            scrollToBottom();
+        }
+
+        function removeTypingIndicator() {
+            const el = document.getElementById('typing-indicator');
+            if (el) el.remove();
+        }
+
+        function scrollToBottom() {
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function showOptions(options, callback) {
+            const optContainer = document.createElement('div');
+            optContainer.className = 'options-container';
+            
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => {
+                    // Visual feedback
+                    const allBtns = optContainer.querySelectorAll('.option-btn');
+                    allBtns.forEach(b => b.classList.add('selected'));
+                    btn.style.background = 'var(--primary-color)';
+                    btn.style.color = 'white';
+                    
+                    // Add user message
+                    addMessage(opt, 'user');
+                    
+                    // Disable buttons
+                    allBtns.forEach(b => b.disabled = true);
+
+                    // Process
+                    callback(opt);
+                };
+                optContainer.appendChild(btn);
+            });
+            chatBody.appendChild(optContainer);
+            scrollToBottom();
+        }
+
+        // --- Conversation Flow ---
+
+        function handleCountryChoice(choice) {
+            state.step = 1; // Move to next step
+            state.preferences.country = choice;
+            removeTypingIndicatorIfPresent();
+            
+            showTypingIndicator();
+            setTimeout(() => {
+                removeTypingIndicator();
+                addMessage(`Great choice! ${choice} has excellent universities. What degree are you looking for?`, 'ai');
+                showOptions(["Bachelors", "Masters", "MBA", "PhD"], handleDegreeChoice);
+            }, 1000);
+        }
+
+        function handleDegreeChoice(choice) {
+            state.step = 2;
+            state.preferences.degree = choice;
+            
+            showTypingIndicator();
+            setTimeout(() => {
+                removeTypingIndicator();
+                addMessage("Got it. How would you rate your academic performance? (Approx GPA)", 'ai');
+                showOptions(["3.5+ (Excellent)", "3.0 - 3.5 (Good)", "Below 3.0"], handleGPAChoice);
+            }, 1000);
+        }
+
+        function handleGPAChoice(choice) {
+            state.step = 3;
+            state.preferences.gpa = choice;
+            
+            showTypingIndicator();
+            setTimeout(() => {
+                removeTypingIndicator();
+                addMessage("Finally, what field interests you the most?", 'ai');
+                showOptions(["Computer Science", "Business & Finance", "Engineering", "Arts & Design"], handleInterestChoice);
+            }, 1000);
+        }
+
+        function handleInterestChoice(choice) {
+            state.step = 4; // Done
+            state.preferences.interest = choice;
+            
+            showTypingIndicator();
+            setTimeout(() => {
+                removeTypingIndicator();
+                addMessage("Thanks! I'm analyzing your profile against our database...", 'ai');
+                
+                // Simulate Analysis Time
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    addMessage("I've found some exciting matches for you! Generating your report now.", 'ai');
+                    setTimeout(() => {
+                        showResults();
+                    }, 1000);
+                }, 1500);
+            }, 800);
+        }
+
+        function removeTypingIndicatorIfPresent() {
+            const el = document.getElementById('typing-indicator');
+            if(el) el.remove();
+        }
+
+        // --- Results Logic ---
+
+        function showResults() {
+            chatSection.classList.add('hidden');
+            resultsSection.classList.remove('hidden');
+            window.scrollTo(0, 0);
+
+            const universities = generateUniversityData(state.preferences);
+            
+            uniGrid.innerHTML = ''; 
+            universities.forEach(uni => {
+                const card = createUniCard(uni);
+                uniGrid.appendChild(card);
+            });
+        }
+
+        function generateUniversityData(pref) {
+            const baseUnis = [
+                { name: "Stanford University", program: "MSc in Computer Science", tuition: "$58k/yr", loc: "California, USA", seed: "stanford" },
+                { name: "MIT", program: "Master of Engineering", tuition: "$57k/yr", loc: "Massachusetts, USA", seed: "mit" },
+                { name: "Harvard University", program: "MBA", tuition: "$73k/yr", loc: "Massachusetts, USA", seed: "harvard" },
+                { name: "University of Oxford", program: "MSc in Data Science", tuition: "£32k/yr", loc: "Oxford, UK", seed: "oxford" },
+                { name: "University of Toronto", program: "MEng in Engineering", tuition: "CAD 45k/yr", loc: "Toronto, Canada", seed: "toronto" },
+                { name: "University of Melbourne", program: "Masters of Business", tuition: "AUD 48k/yr", loc: "Melbourne, Australia", seed: "melbourne" }
+            ];
+
+            let results = baseUnis.filter(u => {
+                if(pref.interest === "Computer Science" && (u.name.includes("MIT") || u.name.includes("Stanford") || u.program.includes("Data"))) return true;
+                if(pref.interest === "Business" && (u.program.includes("MBA") || u.program.includes("Business"))) return true;
+                return true; 
+            });
+
+            return results.slice(0, 4).map((u, i) => ({
+                ...u,
+                matchScore: 95 - (i * 5),
+                image: `https://picsum.photos/seed/${u.seed}/400/200`
+            }));
+        }
+
+        function createUniCard(uni) {
+            const div = document.createElement('div');
+            div.className = 'uni-card';
+            div.innerHTML = `
+                <img src="${uni.image}" alt="${uni.name}" class="uni-image">
+                <div class="uni-content">
+                    <span class="uni-badge">${uni.matchScore}% Match</span>
+                    <h3 class="uni-name">${uni.name}</h3>
+                    <p class="uni-program">${uni.program}</p>
+                    
+                    <div class="uni-stats">
+                        <div class="uni-stat">
+                            <strong>Tuition</strong>
+                            ${uni.tuition}
+                        </div>
+                        <div class="uni-stat">
+                            <strong>Location</strong>
+                            ${uni.loc}
+                        </div>
+                    </div>
+                    
+                    <button class="btn-apply" onclick="alert('Starting application for ${uni.name}...')">Apply Now</button>
+                </div>
+            `;
+            return div;
+        }
+
+        function resetApp() {
+            state.step = 0;
+            state.preferences = { country: null, degree: null, gpa: null, interest: null };
+            
+            chatBody.innerHTML = '';
+            
+            resultsSection.classList.add('hidden');
+            chatSection.classList.add('hidden');
+            landingSection.classList.remove('hidden');
+            landingSection.classList.add('fade-in');
+            
+            window.scrollTo(0, 0);
+        }
+
+    </script>
+</body>
+</html>
